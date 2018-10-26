@@ -1,0 +1,10 @@
+https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo
+
+https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo
+
+https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=MSFT&apikey=demo
+
+
+
+
+https://www.alphavantage.co/query?function=`${timeFrame}`&symbol=apikey=${coin}&SZGMIHDEPWLBE9NI
