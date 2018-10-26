@@ -1,0 +1,71 @@
+const PubSub = require("../helpers/pub_sub.js")
+
+const CryptoList = function(container){
+  this.container = container;
+  this.coins = null
+};
+
+CryptoList.prototype.bindEvents = function () {
+  PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
+    this.coins = event.detail;
+    this.render();
+    console.log(this.coins[0]);
+  })
+
+};
+
+CryptoList.prototype.render = function () {
+  const button = document.querySelector("#coin-prices")
+  button.addEventListener("click", () => {
+    this.container.innerHTML = ''
+    const table = this.createTable();
+    this.container.appendChild(table)
+  })
+};
+
+CryptoList.prototype.createTable = function () {
+  const headerKeys = ["Rank","Name","Symbol","Price  (USD)",,"Change","Market Size  (USD)"]
+  const keys = ["rank", "name", "symbol","quotes"]
+  const table = document.createElement("table")
+  const tableHeader = document.createElement('thead')
+const headerRow = document.createElement('TR');
+
+
+headerKeys.forEach((key) => {
+  const title = document.createElement('TD')
+  title.innerHTML = `${key}`
+  headerRow.appendChild(title);
+})
+
+
+tableHeader.appendChild(headerRow)
+  const tableBody = document.createElement('tbody')
+  this.coins.forEach((coin) => {
+    const tableRow = document.createElement('TR');
+    keys.forEach((key) => {
+      if(key === "quotes"){
+        const usd = coin[`${key}`].USD
+        console.log(usd);
+        const usdKeys = ["price","percent_change_24h","market_cap"]
+        usdKeys.forEach((key) => {
+          const valueCell = document.createElement('TD')
+          valueCell.id = key
+          valueCell.innerHTML = usd[`${key}`]
+          tableRow.appendChild(valueCell)
+        })
+
+      }
+      const cell = document.createElement('TD')
+      cell.id = coin[`${key}`]
+      cell.innerHTML = coin[`${key}`]
+      tableRow.appendChild(cell)
+    })
+    tableBody.appendChild(tableRow)
+  })
+
+  table.appendChild(tableHeader);
+  table.appendChild(tableBody);
+  return table;
+};
+
+module.exports = CryptoList;
