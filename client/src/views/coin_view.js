@@ -9,6 +9,7 @@ CoinView.prototype.render = function(coinObject){
   const newBox = this.createDivBox("single-coin")
   coinProperties = this.getProps(coinObject)
   const newList = document.createElement('ul')
+
   coinProperties.forEach((property) => {
     const nameProp = document.createElement('li')
     nameProp.textContent(coinProperties.name)

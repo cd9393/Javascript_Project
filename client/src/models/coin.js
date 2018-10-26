@@ -22,14 +22,12 @@ Coin.prototype.getAllCoins = function () {
   allCoinRequest.get()
   .then((data) => {
     this.allCoins = data.data;
-    // console.log(this.allCoins);
-const sortedCoins = Object.values(this.allCoins);
+    const sortedCoins = Object.values(this.allCoins);
 
-sortedCoins.sort(function(a,b){
-  return a.rank - b.rank;
-})
-    // console.log(sortedCoins);
-    PubSub.publish('Coin:All-Coins-Loaded',this.allCoins)
+    sortedCoins.sort(function(a,b){
+      return a.rank - b.rank;
+    })
+    PubSub.publish("Coin:SortedCoins Ready", sortedCoins)
   })
 };
 
