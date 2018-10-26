@@ -28,17 +28,17 @@ CryptoList.prototype.createTable = function () {
   const keys = ["rank", "name", "symbol","quotes"]
   const table = document.createElement("table")
   const tableHeader = document.createElement('thead')
-const headerRow = document.createElement('TR');
+  const headerRow = document.createElement('TR');
 
 
-headerKeys.forEach((key) => {
-  const title = document.createElement('TD')
-  title.innerHTML = `${key}`
-  headerRow.appendChild(title);
-})
+  headerKeys.forEach((key) => {
+    const title = document.createElement('TD')
+    title.innerHTML = `${key}`
+    headerRow.appendChild(title);
+  })
 
 
-tableHeader.appendChild(headerRow)
+  tableHeader.appendChild(headerRow)
   const tableBody = document.createElement('tbody')
   this.coins.forEach((coin) => {
     const tableRow = document.createElement('TR');
@@ -50,22 +50,22 @@ tableHeader.appendChild(headerRow)
         usdKeys.forEach((key) => {
           const valueCell = document.createElement('TD')
           valueCell.id = key
-          valueCell.innerHTML = usd[`${key}`]
+          valueCell.innerHTML = usd[`${key}`].toFixed(2)
           tableRow.appendChild(valueCell)
         })
 
-      }
-      const cell = document.createElement('TD')
-      cell.id = coin[`${key}`]
-      cell.innerHTML = coin[`${key}`]
-      tableRow.appendChild(cell)
+      }else{
+        const cell = document.createElement('TD')
+        cell.id = coin[`${key}`]
+        cell.innerHTML = coin[`${key}`]
+        tableRow.appendChild(cell)
+      }})
+      tableBody.appendChild(tableRow)
     })
-    tableBody.appendChild(tableRow)
-  })
 
-  table.appendChild(tableHeader);
-  table.appendChild(tableBody);
-  return table;
-};
+    table.appendChild(tableHeader);
+    table.appendChild(tableBody);
+    return table;
+  };
 
-module.exports = CryptoList;
+  module.exports = CryptoList;
