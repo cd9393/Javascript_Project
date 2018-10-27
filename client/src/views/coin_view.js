@@ -6,27 +6,29 @@ const CoinView = function(coinObject){
 
 CoinView.prototype.render = function(coinObject){
   // console.log(coinObject);
-  const newBox = this.createDivBox("single-coin")
+  // const coinBox = this.createDivBox("single-coin")
+
+  const coinBox = document.createElement('div')
+  coinBox.classList.add('single-coin')
+
   coinProperties = this.getProps(coinObject)
+
   const newList = document.createElement('ul')
 
-  coinProperties.forEach((property) => {
-    const nameProp = document.createElement('li')
-    nameProp.textContent(coinProperties.name)
-    const amountProp = document.createElement('li')
-    amountProp.textContent(coinProperties.name)
-  })
-  newBox.appendChild(newList)
-
-
-  // const coinBox = this.createDivBox("coinBox");
-  // const table =
+  for (property in coinProperties) {
+    const prop = document.createElement('li')
+    prop.textContent = coinProperties[property]
+    prop.value = "API call for symbol here"
+    newList.appendChild(prop)
+  }
+  coinBox.appendChild(newList)
+  return coinBox
 }
-
 
 CoinView.prototype.createDivBox = function (className){
   const divBox = document.createElement('div')
   divBox.classList.add(className)
+  return divBox
 }
 
 CoinView.prototype.getProps = function(coin){

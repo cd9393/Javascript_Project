@@ -16,12 +16,11 @@ PortfolioView.prototype.render = function(portfolioData){
   const portfolioContent = this.selectElement('#left-contents')
   portfolioContent.innerHTML = '';
   portfolioData.forEach((coin) => {
-    const newCoinView = new CoinView()
-    newCoinView.render(coin)
-    // console.log("this forEach works");
-    this.portfolioContent.appendChild(newCoinView)
+    const coinView = new CoinView()
+    const newCoin = coinView.render(coin)
+    portfolioContent.appendChild(newCoin)
   });
-  
+
 }
 
 PortfolioView.prototype.selectElement = function(element){
