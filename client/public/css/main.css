@@ -16,6 +16,12 @@ li {
   padding: 10px;
 }
 
+.coin-box {
+  padding: 2px;
+  margin: 10px;
+  background: grey;
+}
+
 .left-div {
   height: 500px;
   width: 300px;

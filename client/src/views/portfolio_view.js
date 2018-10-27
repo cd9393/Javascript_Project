@@ -20,7 +20,6 @@ PortfolioView.prototype.render = function(portfolioData){
     const newCoin = coinView.render(coin)
     portfolioContent.appendChild(newCoin)
   });
-
 }
 
 PortfolioView.prototype.selectElement = function(element){
