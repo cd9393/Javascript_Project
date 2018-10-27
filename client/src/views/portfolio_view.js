@@ -8,7 +8,7 @@ const PortfolioView = function(portfolioElement){
 PortfolioView.prototype.bindEvents = function(){
   PubSub.subscribe('Coin:Portfolio-Loaded', (event) => {
     const portfolioData = event.detail;
-    this.render(portfolioData);
+    // this.render(portfolioData);
   })
 }
 
@@ -21,7 +21,7 @@ PortfolioView.prototype.render = function(portfolioData){
     // console.log("this forEach works");
     this.portfolioContent.appendChild(newCoinView)
   });
-  
+
 }
 
 PortfolioView.prototype.selectElement = function(element){
