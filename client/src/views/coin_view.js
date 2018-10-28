@@ -1,7 +1,7 @@
 const PubSub = require('../helpers/pub_sub')
 
 const CoinView = function(){
-  this.latestPrice =
+  // this.latestCoinData = null;
 }
 
 CoinView.prototype.render = function(coinObject){
@@ -24,13 +24,14 @@ CoinView.prototype.render = function(coinObject){
 
 CoinView.prototype.createCoinBox = function(coinObject){
   // console.log(coinObject.name);
-  console.log('this coinBox function works');
   const coinBox = document.createElement('div')
   coinBox.classList.add(`coin-box`)
   coinBox.id = `${coinObject.name}-itemId`
 
   // This event listener will link to the Google charts display div
-  coinBox.addEventListener('click', (event) => {console.log('Trigger graph')});
+  coinBox.addEventListener('click', (event) => {
+    console.log(`Trigger ${coinObject.name} graph`)
+  });
   return coinBox
 }
 
@@ -43,13 +44,38 @@ CoinView.prototype.addListItems = function(theList, coinProperties){
 }
 
 CoinView.prototype.getProps = function(coin){
+
+  // Get latest coin data from CoinMarketCap API before rendering
+  // Use the DB coin name to search for the price on CoinMarketCap API
+  const coinPrice = this.getCoinPrice(coin.name)
+  console.log(coinPrice);
+
   const newObject = {
     name: coin.name,
     amount: coin.amount,
-    price: "current price",
-    value: coin.amount * 3
+    price: coinPrice,
+    value: coin.amount * coinPrice
   }
+
   return newObject
+
 }
+
+CoinView.prototype.getCoinPrice = function(coinName){
+  // Find coin and get latest price
+
+  PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
+    this.latestCoinData = event.detail;
+
+    const coinFound = this.latestCoinData.find(function(coin){
+      return coin.name === coinName
+    })
+
+    console.log(`Found ${coinFound.quotes.USD.price}`)
+    return coinFound.quotes.USD.price
+
+  });
+}
+
 
 module.exports = CoinView;

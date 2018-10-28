@@ -39,6 +39,7 @@ Coin.prototype.getData = function(){
   })
 }
 
+// Get latest portfolio record in DB
 Coin.prototype.getPortfolioDB = function (){
   const request = new Request(this.portfolioDB);
   request.get()
@@ -47,9 +48,5 @@ Coin.prototype.getPortfolioDB = function (){
     PubSub.publish('Coin:Portfolio-Loaded', data)
   })
 }
-
-
-
-
 
 module.exports = Coin;

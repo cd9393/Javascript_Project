@@ -6,19 +6,26 @@ const PortfolioView = function(portfolioElement){
 }
 
 PortfolioView.prototype.bindEvents = function(){
+
+  // Load mongoDB data
   PubSub.subscribe('Coin:Portfolio-Loaded', (event) => {
-    const portfolioData = event.detail;
-    this.render(portfolioData);
+    const portfolioDB = event.detail;
+    this.render(portfolioDB);
   })
 }
 
-PortfolioView.prototype.render = function(portfolioData){
-  const portfolioContent = this.selectElement('#left-contents')
-  portfolioContent.innerHTML = '';
-  portfolioData.forEach((coin) => {
+PortfolioView.prototype.render = function(portfolioDB){
+  const portfolioWrapper = this.selectElement('#left-contents')
+  // Clear div and render coins in MongoDB
+  portfolioWrapper.innerHTML = '';
+  this.assembleCoinList(portfolioDB, portfolioWrapper)
+}
+
+PortfolioView.prototype.assembleCoinList = function(db, wrapper){
+  db.forEach((coin) => {
     const coinView = new CoinView()
     const newCoin = coinView.render(coin)
-    portfolioContent.appendChild(newCoin)
+    wrapper.appendChild(newCoin)
   });
 }
 

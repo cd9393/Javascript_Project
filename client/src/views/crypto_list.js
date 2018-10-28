@@ -9,7 +9,7 @@ CryptoList.prototype.bindEvents = function () {
   PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
     this.coins = event.detail;
     this.render();
-    console.log(this.coins[0]);
+    // console.log(this.coins[0]);
   })
 
 };
