@@ -12,10 +12,37 @@ const Coin = function(url){
 }
 
 Coin.prototype.bindEvents = function(){
+  PubSub.subscribe("CryptoList: clicked-coin-symbol", (event) => {
+    this.individualCoinPriceData(event.detail)
+  })
   this.getPortfolioDB();
   this.getAllCoins();
   this.getData();
 }
+
+Coin.prototype.individualCoinPriceData = function (symbol) {
+  const individualCoinData = new Request(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=SZGMIHDEPWLBE9NI`);
+
+  individualCoinData.get().then((data) => {
+    this.singleCoinData = data["Time Series (Digital Currency Daily)"]
+    this.singleCoinResult = data
+    const dates = Object.keys(this.singleCoinData)
+    console.log(data);
+    const dateInfo = []
+    dates.forEach((date) => {
+      const closePrice = this.singleCoinData[date]["4b. close (USD)"]
+      const info = {
+        name: this.singleCoinResult["Meta Data"]["3. Digital Currency Name"],
+        symbol: this.singleCoinResult["Meta Data"]["2. Digital Currency Code"],
+        date: date,
+        close: closePrice
+      };
+      dateInfo.push(info)
+    })
+    PubSub.publish("coin:chosen-coin-price-History",dateInfo)
+  })
+
+};
 
 Coin.prototype.getAllCoins = function () {
   const allCoinRequest = new Request("https://api.coinmarketcap.com/v2/ticker/?sort=rank")
