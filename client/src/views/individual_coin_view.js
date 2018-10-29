@@ -3,6 +3,7 @@ const PubSub = require('../helpers/pub_sub.js')
 const IndividualCoinView = function(container){
 
   this.container = container;
+  this.performance_container = document.createElement('div')
 
 };
 
@@ -20,21 +21,30 @@ IndividualCoinView.prototype.render = function (priceHistory) {
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
   this.container.appendChild(header)
+  this.performance_container.appendChild(this.weeklyGain(priceHistory));
+  this.performance_container.appendChild(this.weeklyChangePrice(priceHistory))
+  this.container.appendChild(this.performance_container)
   this.makeChart(this.chartData);
-  this.weeklyGain(priceHistory);
-  this.monthlyGain(priceHistory)
 
 };
 
-IndividualCoinView.prototype.monthlyGain = function (priceHistory) {
-  const monthlyChange = ((priceHistory[30].close - priceHistory[0].close) / priceHistory[0].close)*100 ;
-  console.log(monthlyChange);
+IndividualCoinView.prototype.weeklyChangePrice = function (priceHistory) {
+
+const weeklyChange = (priceHistory[0].close - priceHistory[7].close).toFixed(2) ;
+const weeklyChangecontainer = document.createElement('div')
+weeklyChangecontainer.textContent = `$ ${weeklyChange} Since Last Week`;
+return weeklyChangecontainer
+
 };
+
 
 IndividualCoinView.prototype.weeklyGain = function (priceHistory) {
 
-const weeklyChange = ((priceHistory[7].close - priceHistory[0].close) / priceHistory[0].close)*100 ;
-console.log(weeklyChange);
+const weeklyChange = (((priceHistory[0].close - priceHistory[7].close) / priceHistory[7].close)*100).toFixed(2) ;
+
+const weeklyChangePercentageContainer = document.createElement('div')
+weeklyChangePercentageContainer.textContent = `% ${weeklyChange} Since Last Week`
+return weeklyChangePercentageContainer
 
 };
 
@@ -73,7 +83,6 @@ IndividualCoinView.prototype.priceHistoryFormat = function (priceHistory,timeFra
   priceHistoryArray.push(priceHistoryArrayHeaders);
   priceHistoryTime.forEach((priceEvent) => {
     let dailyPrice = [];
-    console.log(priceEvent.date);
     dailyPrice.push(new Date(priceEvent.date))
     dailyPrice.push(parseFloat(priceEvent.close))
     priceHistoryArray.push(dailyPrice)

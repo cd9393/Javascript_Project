@@ -51,7 +51,6 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
       };
       dateInfo.push(info)
     })
-    console.log(dateInfo);
     PubSub.publish("coin:chosen-coin-price-History",dateInfo)
   })
 };
