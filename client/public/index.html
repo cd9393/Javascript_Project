@@ -21,6 +21,19 @@
 
   <main class = "whole-page">
     <div class="left-div">
+      <form id="coin-quantity-form">
+        <label for="select">Coin</label>
+        <select name="select" id="coin-drop-down">
+          <option selected disabled>-- Select a coin --</option>
+          <option value="Bitcoin">Bitcoin</option>
+          <option value="Litecoin">Litecoin</option>
+          <option value="Ethereum">Ethereum</option>
+          <option value="XRP">Ripple</option>
+        </select>
+        <label for="number">Enter quantity</label>
+        <input type="number" id="number"/>
+        <input type="submit" value="submit"/>
+      </form>
       <h2>Portfolio summary</h2>
       <div id="left-contents">
         this contains the portfolio

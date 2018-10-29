@@ -56,9 +56,7 @@ CoinView.prototype.getProps = function(coin){
     price: coinPrice,
     value: coin.amount * coinPrice
   }
-
   return newObject
-
 }
 
 CoinView.prototype.getCoinPrice = function(coinName){
