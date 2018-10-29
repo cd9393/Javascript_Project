@@ -26,15 +26,15 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
 
   const todaysPrice = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${symbol}&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`);
 
-  todaysPrice.get().then((data)=>{
-    const realTimeInfo = {
-      name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
-      symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
-      date: data["Realtime Currency Exchange Rate"]["6. Last Refreshed"],
-      close: data["Realtime Currency Exchange Rate"]["5. Exchange Rate"] ,
-    }
-    PubSub.publish("coin: chosen-coin-real-time-price",realTimeInfo)
-  })
+  // todaysPrice.get().then((data)=>{
+  //   const realTimeInfo = {
+  //     name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
+  //     symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
+  //     date: data["Realtime Currency Exchange Rate"]["6. Last Refreshed"],
+  //     close: data["Realtime Currency Exchange Rate"]["5. Exchange Rate"] ,
+  //   }
+  //   PubSub.publish("coin: chosen-coin-real-time-price",realTimeInfo)
+  // })
 
   individualCoinData.get().then((data) => {
     this.singleCoinData = data["Time Series (Digital Currency Daily)"]
@@ -51,6 +51,7 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
       };
       dateInfo.push(info)
     })
+    console.log(dateInfo);
     PubSub.publish("coin:chosen-coin-price-History",dateInfo)
   })
 };

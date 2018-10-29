@@ -14,13 +14,27 @@ IndividualCoinView.prototype.bindEvents = function () {
 };
 
 IndividualCoinView.prototype.render = function (priceHistory) {
-  this.chartData = (this.priceHistoryFormat(priceHistory, 90));
+  this.chartData = (this.priceHistoryFormat(priceHistory, 20));
 
   this.container.innerHTML = '';
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
   this.container.appendChild(header)
   this.makeChart(this.chartData);
+  this.weeklyGain(priceHistory);
+  this.monthlyGain(priceHistory)
+
+};
+
+IndividualCoinView.prototype.monthlyGain = function (priceHistory) {
+  const monthlyChange = ((priceHistory[30].close - priceHistory[0].close) / priceHistory[0].close)*100 ;
+  console.log(monthlyChange);
+};
+
+IndividualCoinView.prototype.weeklyGain = function (priceHistory) {
+
+const weeklyChange = ((priceHistory[7].close - priceHistory[0].close) / priceHistory[0].close)*100 ;
+console.log(weeklyChange);
 
 };
 
@@ -52,12 +66,14 @@ IndividualCoinView.prototype.makeChart = function () {
 
 
 IndividualCoinView.prototype.priceHistoryFormat = function (priceHistory,timeFrame = 365) {
-  const priceHistoryTime = priceHistory.splice(0, timeFrame)
+  const priceHistoryClone = JSON.parse(JSON.stringify( priceHistory));
+  const priceHistoryTime = priceHistoryClone.splice(0, timeFrame)
   let priceHistoryArray = [];
   let priceHistoryArrayHeaders = ["Date","close"];
   priceHistoryArray.push(priceHistoryArrayHeaders);
   priceHistoryTime.forEach((priceEvent) => {
     let dailyPrice = [];
+    console.log(priceEvent.date);
     dailyPrice.push(new Date(priceEvent.date))
     dailyPrice.push(parseFloat(priceEvent.close))
     priceHistoryArray.push(dailyPrice)
