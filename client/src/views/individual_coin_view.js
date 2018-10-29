@@ -48,10 +48,6 @@ IndividualCoinView.prototype.makeChart = function () {
   }
 
   google.charts.setOnLoadCallback(drawChart);
-
-  // Draw the chart and set the chart values
-  this.container.appendChild(chartFunction);
-
 };
 
 

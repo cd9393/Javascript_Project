@@ -27,7 +27,6 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
   const todaysPrice = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${symbol}&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`);
 
   todaysPrice.get().then((data)=>{
-    console.log(data);
     const realTimeInfo = {
       name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
       symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
