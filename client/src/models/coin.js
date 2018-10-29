@@ -20,12 +20,14 @@ Coin.prototype.bindEvents = function(){
   this.getData();
 }
 
+
 Coin.prototype.individualCoinPriceData = function (symbol) {
   const individualCoinData = new Request(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=SZGMIHDEPWLBE9NI`);
 
   const todaysPrice = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${symbol}&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`);
 
   todaysPrice.get().then((data)=>{
+    console.log(data);
     const realTimeInfo = {
       name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
       symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
@@ -39,7 +41,7 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
     this.singleCoinData = data["Time Series (Digital Currency Daily)"]
     this.singleCoinResult = data
     const dates = Object.keys(this.singleCoinData)
-     dateInfo = []
+    dateInfo = []
     dates.forEach((date) => {
       const closePrice = this.singleCoinData[date]["4b. close (USD)"]
       const info = {
@@ -50,7 +52,7 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
       };
       dateInfo.push(info)
     })
-      PubSub.publish("coin:chosen-coin-price-History",dateInfo)
+    PubSub.publish("coin:chosen-coin-price-History",dateInfo)
   })
 };
 
@@ -80,7 +82,6 @@ Coin.prototype.getPortfolioDB = function (){
   const request = new Request(this.portfolioDB);
   request.get()
   .then((data) => {
-    console.log(data);
     PubSub.publish('Coin:Portfolio-Loaded', data)
   })
 }

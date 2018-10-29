@@ -2,13 +2,18 @@ const Coin = require('./models/coin')
 const PortfolioView = require('./views/portfolio_view')
 const CryptoList = require('./views/crypto_list.js')
 const TotalValueView = require('./views/total_value_view.js')
+const IndividualCoinView = require('./views/individual_coin_view.js')
 
 
 document.addEventListener('DOMContentLoaded', () => {
 
   console.log("Javascript Loaded");
 
+
   const listContainer = document.querySelector('.whole-page')
+
+  const individualCoinView = new IndividualCoinView(listContainer);
+  individualCoinView.bindEvents();
 
   const totalValueView = new TotalValueView(listContainer);
   totalValueView.bindEvents();

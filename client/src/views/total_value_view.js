@@ -20,7 +20,7 @@ TotalValueView.prototype.bindEvents = function () {
 TotalValueView.prototype.render = function (amount) {
   const valueDiv = document.createElement('div');
   const value = document.createElement('h1');
-  value.textContent = `Portfolio Value : $ ${amount}`
+  value.textContent = `Portfolio Value :$ ${amount}`
   valueDiv.appendChild(value)
   this.container.insertBefore(valueDiv,this.container.firstChild)
 };
