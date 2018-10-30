@@ -15,7 +15,7 @@ FormView.prototype.bindEvents = function(){
 FormView.prototype.handleSubmit = function(event){
   event.preventDefault();
   PubSub.publish('FormView:coin-submitted', event.target);
-  this.form.reset(); // Reset form last other you lose the values
+  this.form.reset(); // Reset form last otherwise you lose the values
 }
 
 module.exports = FormView;

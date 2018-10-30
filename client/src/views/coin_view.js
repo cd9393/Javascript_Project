@@ -26,7 +26,17 @@ CoinView.prototype.createCoinBox = function(coinObject){
   // console.log(coinObject.name);
   const coinBox = document.createElement('div')
   coinBox.classList.add(`coin-box`)
-  coinBox.id = `${coinObject.name}-itemId`
+
+  const detailsBox = document.createElement('div')
+  detailsBox.classList.add(`details-box`)
+  detailsBox.id = `${coinObject.name}-itemId`
+  detailsBox.value = coinObject._id
+
+  const deleteBtn = this.createDeleteButton(coinObject)
+  coinBox.appendChild(deleteBtn)
+
+  coinBox.appendChild(detailsBox)
+
 
   // This event listener will link to the Google charts display div
   coinBox.addEventListener('click', (event) => {
@@ -75,5 +85,18 @@ CoinView.prototype.getCoinPrice = function(coinName){
   });
 }
 
+CoinView.prototype.createDeleteButton = function(coinObject){
+  // Best to replace this div with an image/vector/SVG
+  const deleteBtnElement = document.createElement('div');
+  deleteBtnElement.textContent = "DELETE";
+  deleteBtnElement.id = "deleteBtn"; // Use this for CSS styling
+  deleteBtnElement.value = coinObject._id // Use this for delete request
+  deleteBtnElement.addEventListener('click', (event) => this.handleDeleteBtn(event))
+  return deleteBtnElement
+}
+
+CoinView.prototype.handleDeleteBtn = function(event){
+  PubSub.publish('CoinView:Delete-Coin', event.target.value)
+}
 
 module.exports = CoinView;

@@ -1,4 +1,4 @@
-nav ul{
+ul{
 
   display: flex;
   padding: 0;
@@ -17,10 +17,16 @@ li {
 }
 
 .coin-box {
+
+}
+
+.details-box {
   padding: 2px;
   margin: 10px;
   background: grey;
+  height: 50px;
 }
+
 
 .left-div {
   height: 500px;
@@ -34,4 +40,10 @@ li {
   width: 300px;
   display: inline-block;
   padding: 10px
+}
+
+#deleteBtn {
+  padding: 2px;
+  background: red;
+
 }

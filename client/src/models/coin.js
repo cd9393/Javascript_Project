@@ -2,6 +2,7 @@
 
 const PubSub = require('../helpers/pub_sub')
 const Request = require('../helpers/request')
+const PortfolioView = require('../views/portfolio_view')
 
 const Coin = function(url){
   this.data = null;
@@ -17,6 +18,7 @@ Coin.prototype.bindEvents = function(){
   this.getAllCoins();
   // this.getData();
   this.getFormSubmitted();
+  this.deleteBtn();
 }
 
 Coin.prototype.getAllCoins = function () {
@@ -42,8 +44,9 @@ Coin.prototype.getData = function(){
 }
 
 // Get latest portfolio record in DB
-Coin.prototype.getPortfolioDB = function (){
-  this.requestDB.get()
+Coin.prototype.getPortfolioDB = function(){
+  // This return allows you to call a .then() elsewhere if required.
+  return this.requestDB.get()
   .then((allCoins) => {
     this.portfolio = allCoins
     console.log(allCoins);
@@ -53,19 +56,25 @@ Coin.prototype.getPortfolioDB = function (){
 
 Coin.prototype.getFormSubmitted = function(){
   // if coin exists in DB then update quantity, else create new coin
-  PubSub.subscribe('FormView:coin-submitted', (event) => {
-    const coinName = event.detail.select.value
-    console.log(coinName);
-    const status = this.coinExists(coinName);
-    console.log("status", status);
-    if(this.coinExists(coinName)){
-      console.log("this coin exists in the DB")
-    }else{
-      console.log("this coin doesn't exist in DB");
-      // const newObject = this.createCoin(event.detail)
-      // this.postPortfolioDB(newObject)
-    }
-  })
+  PubSub.subscribe('FormView:coin-submitted', async (event) => {
+
+    const formCoin = this.createCoin(event.detail);
+
+    await this.getPortfolioDB()
+
+    // this.coinExists() depends on this.getPortfolioDB completing first.
+    const status = this.coinExists(formCoin.name);
+
+      if(status){
+        const coinToUpdate = this.searchCoin(formCoin.name)
+        this.updateCoin(coinToUpdate, formCoin)
+      }else{
+        this.requestDB.post(formCoin).then((coins) => {
+          PubSub.publish('Coin:Portfolio-Loaded', coins)
+        });
+      }
+
+  });
 }
 
 Coin.prototype.postPortfolioDB = function(coin){
@@ -80,35 +89,54 @@ Coin.prototype.postPortfolioDB = function(coin){
 Coin.prototype.coinExists = function(coinName){
 
   console.log('This coin search function works');
-    var status = null;
-    const coinFound = this.searchCoin(this.portfolio, coinName);
-    console.log(this.portfolio);
-    console.log(coinName);
+  let status = null;
+  const coinFound = this.searchCoin(coinName);
+  if(coinFound === undefined){
     console.log(coinFound);
-    if(coinFound === undefined){
-      console.log(coinFound);
-      status = false
-    }else{
-      console.log(coinFound);
-      status = true
-    }
-    console.log(status);
-    return status
+    status = false
+  }else{
+    console.log(coinFound);
+    status = true
   }
-
-
-
-Coin.prototype.searchCoin = function(allCoins, coinName){
-  const coinFound = allCoins.find(function(coin){
-    // console.log(`coin.name gives ${coin.name}`);
-    // console.log(`coinName gives ${coinName}`);
-    // console.log(coin.name === coinName);
-    return coin.name === coinName;
-  })
-
-  return coinFound
-
+  return status
 }
 
+Coin.prototype.searchCoin = function(coinName){
+  const coinFound = this.portfolio.find(function(coin){
+    return coin.name === coinName;
+  });
+  return coinFound
+}
+
+Coin.prototype.updateCoin = function(existingCoin, formCoinData){
+  const id = existingCoin._id;
+  console.log(formCoinData);
+  // update coin quantity
+  const coinUpdated = {
+    name: existingCoin.name,
+    amount: existingCoin.amount + formCoinData.amount
+  }
+
+  this.requestDB.put(id, coinUpdated)
+  .then((coins) => {
+    PubSub.publish('Coin:Portfolio-Loaded', coins)
+  })
+}
+
+Coin.prototype.createCoin = function(formInput){
+  // May need to add total value and price entry points later
+  const newCoin = {
+    name: formInput.select.value,
+    amount: parseFloat(formInput.number.value)
+  }
+  return newCoin
+}
+
+Coin.prototype.deleteBtn = function(){
+  PubSub.subscribe('CoinView:Delete-Coin', (event) => {
+    const delete_id = event.detail;
+    console.log(delete_id);
+  })
+}
 
 module.exports = Coin;
