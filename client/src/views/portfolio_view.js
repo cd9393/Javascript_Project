@@ -9,6 +9,7 @@ PortfolioView.prototype.bindEvents = function(){
 
   // Load mongoDB data
   PubSub.subscribe('Coin:Portfolio-Loaded', (event) => {
+
     const portfolioDB = event.detail;
     this.render(portfolioDB);
   })
@@ -23,9 +24,8 @@ PortfolioView.prototype.render = function(portfolioDB){
 
 PortfolioView.prototype.assembleCoinList = function(db, wrapper){
   db.forEach((coin) => {
-    const coinView = new CoinView()
+    const coinView = new CoinView(wrapper)
     const newCoin = coinView.render(coin)
-    wrapper.appendChild(newCoin)
   });
 }
 

@@ -1,15 +1,21 @@
 const PubSub = require('../helpers/pub_sub')
+const Coin = require('../models/coin')
 
-const CoinView = function(){
-  // this.latestCoinData = null;
+const CoinView = function(wrapper){
+  this.wrapper = wrapper
 }
 
 CoinView.prototype.render = function(coinObject){
 
-  // This creates the div box holding single coin details
-  const coinBox = this.createCoinBox(coinObject)
+  PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
+    console.log(event.detail);
+    this.latestCoinData = event.detail;
+    // This creates the div box holding single coin details
+    const coinBox = this.createCoinBox(coinObject)
+    this.wrapper.appendChild(coinBox);
 
-  return coinBox
+  });
+
 }
 
 CoinView.prototype.createCoinBox = function(coinObject){
@@ -76,17 +82,14 @@ CoinView.prototype.getProps = function(coin){
 CoinView.prototype.getCoinPrice = function(coinName){
   // Find coin and get latest price
 
-  PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
-    this.latestCoinData = event.detail;
 
-    const coinFound = this.latestCoinData.find(function(coin){
-      return coin.name === coinName
-    })
+  console.log(this.latestCoinData);
+  const coinFound = this.latestCoinData.find(function(coin){
+    return coin.name === coinName
+  })
 
-    console.log(`Found ${coinFound.quotes.USD.price}`)
-    return coinFound.quotes.USD.price
-
-  });
+  console.log(`Found ${coinFound.quotes.USD.price}`)
+  return coinFound.quotes.USD.price
 
 }
 

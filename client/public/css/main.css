@@ -17,7 +17,7 @@ li {
 }
 
 .coin-box {
-  width: 500px;
+  width: 700px;
   margin: 10px;
 }
 
@@ -27,11 +27,12 @@ li {
   background: grey;
   height: 40px;
   display: inline-block;
+  width: 500px;
 }
 
 .left-div {
   height: 500px;
-  width: 300px;
+  width: 500px;
   display: inline-block;
   padding: 10px;
 }

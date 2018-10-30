@@ -92,6 +92,7 @@ Coin.prototype.getAllCoins = function () {
     sortedCoins.sort(function(a,b){
       return a.rank - b.rank;
     })
+    console.log(sortedCoins);
     PubSub.publish("Coin:SortedCoins Ready", sortedCoins)
   })
 };
@@ -121,7 +122,7 @@ Coin.prototype.getFormSubmitted = function(){
 
     const formCoin = this.createCoin(event.detail);
 
-    await this.getPortfolioDB()
+    await this.getPortfolioDB() // await for this to finish before doing anything else.
 
     // this.coinExists() depends on this.getPortfolioDB completing first.
     const status = this.coinExists(formCoin.name);
