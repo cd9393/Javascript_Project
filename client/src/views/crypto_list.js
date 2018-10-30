@@ -1,4 +1,5 @@
 const PubSub = require("../helpers/pub_sub.js")
+const IndividualCoinView = require("./individual_coin_view.js")
 
 const CryptoList = function(container){
   this.container = container;

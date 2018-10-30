@@ -33,6 +33,7 @@ CoinView.prototype.createCoinBox = function(coinObject){
 
   // Create list from the DB property values
   const newList = document.createElement('ul')
+  newList.classList.add(`${coinObject.symbol}`)
   this.addListItems(newList, coinProperties)
 
   // Add and return the list details of a single coin
@@ -49,7 +50,8 @@ CoinView.prototype.createCoinBox = function(coinObject){
 
   // This event listener will link to the Google charts display div
   detailsBox.addEventListener('click', (event) => {
-    console.log(`Trigger ${coinObject.name} graph`)
+    const symbol = event.target.className;
+    PubSub.publish("coinView: coin-clicked", symbol)
   });
   return coinBox
 }

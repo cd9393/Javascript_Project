@@ -17,6 +17,11 @@ Coin.prototype.bindEvents = function(){
   PubSub.subscribe("CryptoList: clicked-coin-symbol", (event) => {
     this.individualCoinPriceData(event.detail)
   })
+
+  PubSub.subscribe("coinView: coin-clicked", (event) => {
+    this.individualCoinPriceData(event.detail)
+    console.log(event.detail);
+  })
   this.getPortfolioDB();
   this.getAllCoins();
   // this.getData();

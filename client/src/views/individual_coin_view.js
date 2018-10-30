@@ -7,7 +7,7 @@ const IndividualCoinView = function(container){
 
 };
 
-IndividualCoinView.prototype.bindEvents = function () {
+IndividualCoinView.prototype.bindEvents = function (priceHistory) {
   PubSub.subscribe('coin:chosen-coin-price-History', (event) => {
     const priceHistory = event.detail;
     this.render(priceHistory)
