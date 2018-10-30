@@ -9,7 +9,6 @@ CryptoList.prototype.bindEvents = function () {
   PubSub.subscribe("Coin:SortedCoins Ready", (event) => {
     this.coins = event.detail;
     this.render();
-    // console.log(this.coins[0]);
   })
 
 };
@@ -24,7 +23,7 @@ CryptoList.prototype.render = function () {
 };
 
 CryptoList.prototype.createTable = function () {
-  const headerKeys = ["Rank","Name","Symbol","Price  (USD)",,"Change","Market Size  (USD)"]
+  const headerKeys = ["Rank","Name","Symbol","Price  (USD)",,"Change (24hrs)","Market Size  (USD)"]
   const keys = ["rank", "name", "symbol","quotes"]
   const table = document.createElement("table")
   const tableHeader = document.createElement('thead')
@@ -45,7 +44,6 @@ CryptoList.prototype.createTable = function () {
     keys.forEach((key) => {
       if(key === "quotes"){
         const usd = coin[`${key}`].USD
-        console.log(usd);
         const usdKeys = ["price","percent_change_24h","market_cap"]
         usdKeys.forEach((key) => {
           const valueCell = document.createElement('TD')
@@ -60,7 +58,13 @@ CryptoList.prototype.createTable = function () {
         cell.innerHTML = coin[`${key}`]
         tableRow.appendChild(cell)
       }})
+      tableRow.id = coin.symbol
+      tableRow.addEventListener('click', (event) => {
+        data = event.path[1].id;
+        PubSub.publish('CryptoList: clicked-coin-symbol', data)
+      })
       tableBody.appendChild(tableRow)
+
     })
 
     table.appendChild(tableHeader);
