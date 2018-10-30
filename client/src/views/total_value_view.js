@@ -18,6 +18,7 @@ TotalValueView.prototype.bindEvents = function () {
 };
 
 TotalValueView.prototype.render = function (amount) {
+  this.container.firstChild.innerHTML= ''
   const valueDiv = document.createElement('div');
   const value = document.createElement('h1');
   value.textContent = `Portfolio Value :$ ${amount}`
