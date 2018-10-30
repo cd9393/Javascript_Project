@@ -15,36 +15,45 @@ IndividualCoinView.prototype.bindEvents = function () {
 };
 
 IndividualCoinView.prototype.render = function (priceHistory) {
-  this.chartData = (this.priceHistoryFormat(priceHistory, 20));
+  this.chartData = (this.priceHistoryFormat(priceHistory, 30));
 
   this.container.innerHTML = '';
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
   this.container.appendChild(header)
+  this.performance_container.appendChild(this.CurrentPrice(priceHistory));
   this.performance_container.appendChild(this.weeklyGain(priceHistory));
   this.performance_container.appendChild(this.weeklyChangePrice(priceHistory))
+  this.CurrentPrice(priceHistory);
   this.container.appendChild(this.performance_container)
   this.makeChart(this.chartData);
 
 };
 
+IndividualCoinView.prototype.CurrentPrice = function (priceHistory) {
+  const todaysPrice = parseFloat(priceHistory[0].close).toFixed(2);
+  const todaysPriceContainer = document.createElement('div');
+  todaysPriceContainer.textContent = `$ ${todaysPrice}  ${priceHistory[0].name} Price`
+  return todaysPriceContainer;
+};
+
 IndividualCoinView.prototype.weeklyChangePrice = function (priceHistory) {
 
-const weeklyChange = (priceHistory[0].close - priceHistory[7].close).toFixed(2) ;
-const weeklyChangecontainer = document.createElement('div')
-weeklyChangecontainer.textContent = `$ ${weeklyChange} Since Last Week`;
-return weeklyChangecontainer
+  const weeklyChange = (priceHistory[0].close - priceHistory[7].close).toFixed(2) ;
+  const weeklyChangecontainer = document.createElement('div')
+  weeklyChangecontainer.textContent = `$ ${weeklyChange} Since Last Week`;
+  return weeklyChangecontainer
 
 };
 
 
 IndividualCoinView.prototype.weeklyGain = function (priceHistory) {
 
-const weeklyChange = (((priceHistory[0].close - priceHistory[7].close) / priceHistory[7].close)*100).toFixed(2) ;
+  const weeklyChange = (((priceHistory[0].close - priceHistory[7].close) / priceHistory[7].close)*100).toFixed(2) ;
 
-const weeklyChangePercentageContainer = document.createElement('div')
-weeklyChangePercentageContainer.textContent = `% ${weeklyChange} Since Last Week`
-return weeklyChangePercentageContainer
+  const weeklyChangePercentageContainer = document.createElement('div')
+  weeklyChangePercentageContainer.textContent = `% ${weeklyChange} Since Last Week`
+  return weeklyChangePercentageContainer
 
 };
 

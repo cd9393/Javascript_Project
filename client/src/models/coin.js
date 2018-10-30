@@ -30,33 +30,56 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
 
   const todaysPrice = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${symbol}&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`);
 
-  // todaysPrice.get().then((data)=>{
-  //   const realTimeInfo = {
-  //     name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
-  //     symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
-  //     date: data["Realtime Currency Exchange Rate"]["6. Last Refreshed"],
-  //     close: data["Realtime Currency Exchange Rate"]["5. Exchange Rate"] ,
-  //   }
-  //   PubSub.publish("coin: chosen-coin-real-time-price",realTimeInfo)
-  // })
-
-  individualCoinData.get().then((data) => {
-    this.singleCoinData = data["Time Series (Digital Currency Daily)"]
-    this.singleCoinResult = data
-    const dates = Object.keys(this.singleCoinData)
-    dateInfo = []
-    dates.forEach((date) => {
-      const closePrice = this.singleCoinData[date]["4b. close (USD)"]
-      const info = {
-        name: this.singleCoinResult["Meta Data"]["3. Digital Currency Name"],
-        symbol: this.singleCoinResult["Meta Data"]["2. Digital Currency Code"],
-        date: date,
-        close: closePrice
-      };
-      dateInfo.push(info)
-    })
-    PubSub.publish("coin:chosen-coin-price-History",dateInfo)
+  const realTimeInfo = todaysPrice.get().then((data)=>{
+    const realTimeInfo = {
+      name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
+      symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
+      date: data["Realtime Currency Exchange Rate"]["6. Last Refreshed"],
+      close: data["Realtime Currency Exchange Rate"]["5. Exchange Rate"] ,
+    }
+    return realTimeInfo;
   })
+
+  realTimeInfo.then((data) => {
+    this.realtime = data;
+    individualCoinData.get().then((data) => {
+      this.singleCoinData = data["Time Series (Digital Currency Daily)"]
+      this.singleCoinResult = data
+      const dates = Object.keys(this.singleCoinData)
+      dateInfo = []
+      dates.forEach((date) => {
+        const closePrice = this.singleCoinData[date]["4b. close (USD)"]
+        const info = {
+          name: this.singleCoinResult["Meta Data"]["3. Digital Currency Name"],
+          symbol: this.singleCoinResult["Meta Data"]["2. Digital Currency Code"],
+          date: date,
+          close: closePrice
+        };
+        dateInfo.push(info)
+      })
+      dateInfo.unshift(this.realtime)
+      console.log(dateInfo);
+      PubSub.publish("coin:chosen-coin-price-History",dateInfo)
+    })
+  })
+
+  // individualCoinData.get().then((data) => {
+  //   this.singleCoinData = data["Time Series (Digital Currency Daily)"]
+  //   this.singleCoinResult = data
+  //   const dates = Object.keys(this.singleCoinData)
+  //   dateInfo = []
+  //   dates.forEach((date) => {
+  //     const closePrice = this.singleCoinData[date]["4b. close (USD)"]
+  //     const info = {
+  //       name: this.singleCoinResult["Meta Data"]["3. Digital Currency Name"],
+  //       symbol: this.singleCoinResult["Meta Data"]["2. Digital Currency Code"],
+  //       date: date,
+  //       close: closePrice
+  //     };
+  //     dateInfo.push(info)
+  //   })
+  //   PubSub.publish("coin:chosen-coin-price-History",dateInfo)
+  // })
 };
 
 Coin.prototype.getAllCoins = function () {
