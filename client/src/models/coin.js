@@ -65,15 +65,14 @@ Coin.prototype.getFormSubmitted = function(){
     // this.coinExists() depends on this.getPortfolioDB completing first.
     const status = this.coinExists(formCoin.name);
 
-      if(status){
-        const coinToUpdate = this.searchCoin(formCoin.name)
-        this.updateCoin(coinToUpdate, formCoin)
-      }else{
-        this.requestDB.post(formCoin).then((coins) => {
-          PubSub.publish('Coin:Portfolio-Loaded', coins)
-        });
-      }
-
+    if(status){
+      const coinToUpdate = this.searchCoin(formCoin.name)
+      this.updateCoin(coinToUpdate, formCoin)
+    }else{
+      this.requestDB.post(formCoin).then((coins) => {
+        PubSub.publish('Coin:Portfolio-Loaded', coins)
+      });
+    }
   });
 }
 
@@ -136,6 +135,10 @@ Coin.prototype.deleteBtn = function(){
   PubSub.subscribe('CoinView:Delete-Coin', (event) => {
     const delete_id = event.detail;
     console.log(delete_id);
+    this.requestDB.delete(delete_id)
+    .then((coins) => {
+      PubSub.publish('Coin:Portfolio-Loaded', coins)
+    })
   })
 }
 

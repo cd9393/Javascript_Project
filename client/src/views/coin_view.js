@@ -5,20 +5,10 @@ const CoinView = function(){
 }
 
 CoinView.prototype.render = function(coinObject){
-  // console.log(coinObject.name);
 
   // This creates the div box holding single coin details
   const coinBox = this.createCoinBox(coinObject)
 
-  // This grabs the latest coin property values from the DB
-  coinProperties = this.getProps(coinObject)
-
-  // Create list from the DB property values
-  const newList = document.createElement('ul')
-  this.addListItems(newList, coinProperties)
-
-  // Add and return the list details of a single coin
-  coinBox.appendChild(newList)
   return coinBox
 }
 
@@ -32,14 +22,27 @@ CoinView.prototype.createCoinBox = function(coinObject){
   detailsBox.id = `${coinObject.name}-itemId`
   detailsBox.value = coinObject._id
 
-  const deleteBtn = this.createDeleteButton(coinObject)
-  coinBox.appendChild(deleteBtn)
+  // This grabs the latest coin property values from the DB
+  coinProperties = this.getProps(coinObject)
+
+  // Create list from the DB property values
+  const newList = document.createElement('ul')
+  this.addListItems(newList, coinProperties)
+
+  // Add and return the list details of a single coin
+  detailsBox.appendChild(newList)
 
   coinBox.appendChild(detailsBox)
 
+  const deleteBtn = this.createDeleteButton(coinObject)
+  coinBox.appendChild(deleteBtn)
+
+  deleteBtn.addEventListener('click', (event) => {
+    this.handleDeleteBtn()
+  })
 
   // This event listener will link to the Google charts display div
-  coinBox.addEventListener('click', (event) => {
+  detailsBox.addEventListener('click', (event) => {
     console.log(`Trigger ${coinObject.name} graph`)
   });
   return coinBox
