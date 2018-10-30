@@ -124,8 +124,16 @@ Coin.prototype.getPortfolioDB = function(){
 Coin.prototype.getFormSubmitted = function(){
   // if coin exists in DB then update quantity, else create new coin
   PubSub.subscribe('FormView:coin-submitted', async (event) => {
+    console.log(event.detail);
+    const coin = {
+      name: event.detail.target[1].value2,
+      symbol: event.detail.target[1].value,
+      price: parseFloat(event.detail.target[1].value3),
+      amount: parseFloat(event.detail.target[0].value)
+    }
+    console.log(coin);
 
-    const formCoin = this.createCoin(event.detail);
+    const formCoin = this.createCoin(event);
 
     await this.getPortfolioDB() // await for this to finish before doing anything else.
 
@@ -189,11 +197,14 @@ Coin.prototype.updateCoin = function(existingCoin, formCoinData){
   })
 }
 
-Coin.prototype.createCoin = function(formInput){
+Coin.prototype.createCoin = function(event){
   // May need to add total value and price entry points later
   const newCoin = {
-    name: formInput.select.value,
-    amount: parseFloat(formInput.number.value)
+    name: event.detail.target[1].value2,
+    symbol: event.detail.target[1].value,
+    price: parseFloat(event.detail.target[1].value3).toFixed(2),
+    amount: parseFloat(event.detail.target[0].value).toFixed(2),
+    value: (parseFloat(event.detail.target[0].value)*(parseFloat(event.detail.target[1].value3))).toFixed(2)
   }
   return newCoin
 }
@@ -204,6 +215,7 @@ Coin.prototype.deleteBtn = function(){
     console.log(delete_id);
     this.requestDB.delete(delete_id)
     .then((coins) => {
+      console.log(coins);
       PubSub.publish('Coin:Portfolio-Loaded', coins)
     })
   })

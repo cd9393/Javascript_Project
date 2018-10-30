@@ -1,5 +1,6 @@
 const PubSub = require('../helpers/pub_sub')
 const CoinView = require('./coin_view')
+const IndividualCoinView = require("./individual_coin_view.js")
 
 const PortfolioView = function(portfolioElement){
   this.portfolioElement = portfolioElement;
@@ -9,10 +10,11 @@ PortfolioView.prototype.bindEvents = function(){
 
   // Load mongoDB data
   PubSub.subscribe('Coin:Portfolio-Loaded', (event) => {
-
+    console.log(event);
     const portfolioDB = event.detail;
     this.render(portfolioDB);
   })
+
 }
 
 PortfolioView.prototype.render = function(portfolioDB){
@@ -25,7 +27,7 @@ PortfolioView.prototype.render = function(portfolioDB){
 PortfolioView.prototype.assembleCoinList = function(db, wrapper){
   db.forEach((coin) => {
     const coinView = new CoinView(wrapper)
-    const newCoin = coinView.render(coin)
+    coinView.render(coin)
   });
 }
 

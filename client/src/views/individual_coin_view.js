@@ -1,4 +1,6 @@
 const PubSub = require('../helpers/pub_sub.js')
+const FormView = require('./form_view.js')
+
 
 const IndividualCoinView = function(container){
 
@@ -8,19 +10,23 @@ const IndividualCoinView = function(container){
 };
 
 IndividualCoinView.prototype.bindEvents = function (priceHistory) {
-  PubSub.subscribe('coin:chosen-coin-price-History', (event) => {
-    const priceHistory = event.detail;
-    this.render(priceHistory)
-  })
+  // PubSub.subscribe('coin:chosen-coin-price-History', (event) => {
+  //   const priceHistory = event.detail;
+    // this.render(priceHistory)
+  // })
 };
 
 IndividualCoinView.prototype.render = function (priceHistory) {
   this.chartData = (this.priceHistoryFormat(priceHistory, 30));
-
+console.log(priceHistory);
   this.container.innerHTML = '';
+
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
   this.container.appendChild(header)
+
+this.createForm(priceHistory);
+
   this.performance_container.appendChild(this.CurrentPrice(priceHistory));
   this.performance_container.appendChild(this.weeklyGain(priceHistory));
   this.performance_container.appendChild(this.weeklyChangePrice(priceHistory))
@@ -28,6 +34,41 @@ IndividualCoinView.prototype.render = function (priceHistory) {
   this.container.appendChild(this.performance_container)
   this.makeChart(this.chartData);
 
+};
+
+IndividualCoinView.prototype.createForm = function (priceHistory) {
+  const formDiv = document.createElement('div');
+  const form = document.createElement('form');
+  form.id = "coin-quantity-form";
+  const label = document.createElement('label');
+  label.for = "number";
+  label.textContent = "Add To Portfolio";
+  form.appendChild(label);
+  const input = document.createElement('input');
+  input.type = "number";
+  input.id = "number";
+  input.step = "any";
+  form.appendChild(input);
+  const submit = document.createElement('input');
+  submit.type = "submit";
+  submit.value = priceHistory[0].symbol;
+  submit.value2 = priceHistory[0].name;
+  submit.value3 = priceHistory[0].close;
+  form.appendChild(submit);
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    PubSub.publish('FormView:coin-submitted', event);
+    form.reset();
+  })
+  formDiv.appendChild(form);
+
+  this.container.appendChild(formDiv);
+
+
+  // <label for="number">Enter quantity</label>
+  // <input type="number" id="number" step="any"/ required>
+  // <input type="submit" value="submit"/>
 };
 
 IndividualCoinView.prototype.CurrentPrice = function (priceHistory) {

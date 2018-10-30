@@ -11,7 +11,11 @@ CryptoList.prototype.bindEvents = function () {
     this.coins = event.detail;
     this.render();
   })
-
+  PubSub.subscribe('coin:chosen-coin-price-History', (event) => {
+    const individualCoinView = new IndividualCoinView(this.container)
+    const priceHistory = event.detail;
+    individualCoinView.render(priceHistory)
+  })
 };
 
 CryptoList.prototype.render = function () {

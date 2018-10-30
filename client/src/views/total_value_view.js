@@ -6,6 +6,7 @@ const TotalValueView = function(container){
 
 TotalValueView.prototype.bindEvents = function () {
   PubSub.subscribe('Coin:Portfolio-Loaded', (event) => {
+    console.log(event.detail);
     const portfolio = event.detail;
 
     const portfolioValue = portfolio.map((coin) => {

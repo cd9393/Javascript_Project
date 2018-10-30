@@ -3,6 +3,7 @@ const Coin = require('../models/coin')
 
 const CoinView = function(wrapper){
   this.wrapper = wrapper
+  this.latestCoinData = null;
 }
 
 CoinView.prototype.render = function(coinObject){
@@ -15,7 +16,8 @@ CoinView.prototype.render = function(coinObject){
     this.wrapper.appendChild(coinBox);
 
   });
-
+  // const coinBox = this.createCoinBox(coinObject)
+  // this.wrapper.appendChild(coinBox);
 }
 
 CoinView.prototype.createCoinBox = function(coinObject){
@@ -44,9 +46,6 @@ CoinView.prototype.createCoinBox = function(coinObject){
   const deleteBtn = this.createDeleteButton(coinObject)
   coinBox.appendChild(deleteBtn)
 
-  deleteBtn.addEventListener('click', (event) => {
-    this.handleDeleteBtn()
-  })
 
   // This event listener will link to the Google charts display div
   detailsBox.addEventListener('click', (event) => {
