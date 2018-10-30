@@ -69,6 +69,7 @@ CoinView.prototype.getProps = function(coin){
     price: coinPrice,
     value: coin.amount * coinPrice
   }
+
   return newObject
 }
 
@@ -86,6 +87,7 @@ CoinView.prototype.getCoinPrice = function(coinName){
     return coinFound.quotes.USD.price
 
   });
+
 }
 
 CoinView.prototype.createDeleteButton = function(coinObject){
