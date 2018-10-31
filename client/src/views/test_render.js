@@ -91,6 +91,9 @@ TestRender.prototype.renderListHeader = function () {
   valueLi.textContent = "Value";
   headerList.appendChild(valueLi);
 
+  const deleteLi = document.createElement('li')
+deleteLi.textContent = "Delete"
+headerList.appendChild(deleteLi)
   headerDiv.appendChild(headerList)
   return headerDiv;
 

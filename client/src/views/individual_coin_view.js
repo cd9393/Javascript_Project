@@ -33,7 +33,7 @@ this.container.innerHTML = ''
   this.container.appendChild(header)
 
 this.createForm(priceHistory);
-
+this.performance_container.classList.add('performance')
   this.performance_container.appendChild(this.CurrentPrice(priceHistory));
   this.performance_container.appendChild(this.weeklyGain(priceHistory));
   this.performance_container.appendChild(this.weeklyChangePrice(priceHistory))

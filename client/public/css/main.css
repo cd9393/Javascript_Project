@@ -8,7 +8,10 @@ ul{
 
 main {
   width: 100%;
-  overflow: auto
+  overflow: auto;
+  background-color: #f9fbfc;
+  font-family: 'Maven Pro', sans-serif;
+
 }
 
 li {
@@ -51,4 +54,41 @@ li {
   background: red;
   height: 40px;
   vertical-align: middle;
+}
+
+thead {
+
+  background-color: #0e62bb;
+  color: white;
+}
+
+tr{
+  border-bottom: 1px solid black;
+}
+
+.table-row{
+  border-bottom: : 1px solid black;
+  border-spacing: 10px;
+}
+
+td{
+  padding: 15px;
+  font-family: 'Maven Pro', sans-serif;
+  font-size: 18pt;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+    padding: 20px;
+}
+.table{
+  padding-top: 25px;
+}
+
+.performance{
+  display: flex;
+justify-content: space-around;
+padding-top: 28px;
+padding-bottom: 28px;
 }
