@@ -27,10 +27,12 @@ this.container.innerHTML = ''
 // table.innerHTML = ''
 // rightDiv.innerHTML = ''
 // leftDiv.innerHTML = ''
-
+const headerDiv = document.createElement('div')
+headerDiv.classList.add('nameHeader')
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
-  this.container.appendChild(header)
+  headerDiv.appendChild(header)
+  this.container.appendChild(headerDiv)
 
 this.createForm(priceHistory);
 this.performance_container.classList.add('performance')

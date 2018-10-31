@@ -32,7 +32,7 @@ TestRender.prototype.render = function (coins) {
 
 TestRender.prototype.renderCoin = function (coin) {
   const coinDiv = document.createElement('div')
-  coinDiv.classList.add(`${coin.name}`);
+  coinDiv.classList.add(`coinsDiv`);
   const coinList = document.createElement('ul');
   const nameLi = document.createElement('li');
   nameLi.textContent = coin.name;
@@ -43,7 +43,7 @@ TestRender.prototype.renderCoin = function (coin) {
   coinList.appendChild(symbolLi)
 
   const priceLi = document.createElement('li');
-  priceLi.textContent = coin.price;
+  priceLi.textContent = parseFloat(coin.price).toFixed(2);
   coinList.appendChild(priceLi);
 
   const amountLi = document.createElement('li');
@@ -68,6 +68,11 @@ TestRender.prototype.renderCoin = function (coin) {
 
 
 TestRender.prototype.renderListHeader = function () {
+  const topDiv = document.createElement('div')
+  topDiv.classList.add('yourPortfolio')
+  const text = document.createElement('h2');
+  text.textContent = "Your Portfolio."
+  topDiv.appendChild(text)
   const headerDiv = document.createElement('div')
   headerDiv.classList.add("portfolio-header");
   const headerList = document.createElement('ul');
@@ -80,7 +85,7 @@ TestRender.prototype.renderListHeader = function () {
   headerList.appendChild(symbolLi)
 
   const priceLi = document.createElement('li');
-  priceLi.textContent = "Price";
+  priceLi.textContent = "Price (USD)";
   headerList.appendChild(priceLi);
 
   const amountLi = document.createElement('li');
@@ -88,14 +93,15 @@ TestRender.prototype.renderListHeader = function () {
   headerList.appendChild(amountLi);
 
   const valueLi = document.createElement('li');
-  valueLi.textContent = "Value";
+  valueLi.textContent = "Value (USD)";
   headerList.appendChild(valueLi);
 
   const deleteLi = document.createElement('li')
 deleteLi.textContent = "Delete"
 headerList.appendChild(deleteLi)
   headerDiv.appendChild(headerList)
-  return headerDiv;
+  topDiv.appendChild(headerDiv)
+  return topDiv;
 
 };
 

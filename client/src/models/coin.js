@@ -89,23 +89,6 @@ Coin.prototype.individualCoinPriceData = function (symbol) {
     })
   })
 
-  // individualCoinData.get().then((data) => {
-  //   this.singleCoinData = data["Time Series (Digital Currency Daily)"]
-  //   this.singleCoinResult = data
-  //   const dates = Object.keys(this.singleCoinData)
-  //   dateInfo = []
-  //   dates.forEach((date) => {
-  //     const closePrice = this.singleCoinData[date]["4b. close (USD)"]
-  //     const info = {
-  //       name: this.singleCoinResult["Meta Data"]["3. Digital Currency Name"],
-  //       symbol: this.singleCoinResult["Meta Data"]["2. Digital Currency Code"],
-  //       date: date,
-  //       close: closePrice
-  //     };
-  //     dateInfo.push(info)
-  //   })
-  //   PubSub.publish("coin:chosen-coin-price-History",dateInfo)
-  // })
 };
 
 Coin.prototype.getAllCoins = function () {

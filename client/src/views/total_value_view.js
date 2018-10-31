@@ -26,6 +26,7 @@ TotalValueView.prototype.bindEvents = function () {
 TotalValueView.prototype.render = function (amount) {
   this.container.innerHTML = ''
   const valueDiv = document.createElement('div');
+  valueDiv.classList.add('totalValue')
   const value = document.createElement('h1');
   value.textContent = `Portfolio Value :$ ${amount.toFixed(2)}`
   valueDiv.appendChild(value)

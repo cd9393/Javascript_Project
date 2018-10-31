@@ -51,7 +51,7 @@ CryptoList.prototype.createTable = function () {
   const tableBody = document.createElement('tbody')
   this.coins.forEach((coin) => {
     const tableRow = document.createElement('TR');
-    tableRow.classList.add('table-row')
+    tableRow.classList.add('table')
     keys.forEach((key) => {
       if(key === "quotes"){
         const usd = coin[`${key}`].USD
