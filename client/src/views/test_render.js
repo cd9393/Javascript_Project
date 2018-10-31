@@ -54,9 +54,18 @@ TestRender.prototype.renderCoin = function (coin) {
   valueLi.textContent = coin.value;
   coinList.appendChild(valueLi);
 
+  const deleteBtn = this.createDeleteButton(coin)
+  coinList.appendChild(deleteBtn)
+
   coinDiv.appendChild(coinList)
+
+  coinDiv.addEventListener('click', (event) => {
+    const symbol = event.target.className;
+    PubSub.publish("coinView: coin-clicked", symbol)
+  })
   return coinDiv;
 };
+
 
 TestRender.prototype.renderListHeader = function () {
   const headerDiv = document.createElement('div')
@@ -86,5 +95,19 @@ TestRender.prototype.renderListHeader = function () {
   return headerDiv;
 
 };
+
+TestRender.prototype.createDeleteButton = function(coinObject){
+  // Best to replace this div with an image/vector/SVG
+  const deleteBtnElement = document.createElement('div');
+  deleteBtnElement.textContent = "DELETE";
+  deleteBtnElement.id = "deleteBtn"; // Use this for CSS styling
+  deleteBtnElement.value = coinObject._id // Use this for delete request
+  deleteBtnElement.addEventListener('click', (event) => this.handleDeleteBtn(event))
+  return deleteBtnElement
+}
+
+TestRender.prototype.handleDeleteBtn = function(event){
+  PubSub.publish('CoinView:Delete-Coin', event.target.value)
+}
 
 module.exports = TestRender;
