@@ -21,7 +21,7 @@ TotalValueView.prototype.render = function (amount) {
   this.container.innerHTML = ''
   const valueDiv = document.createElement('div');
   const value = document.createElement('h1');
-  value.textContent = `Portfolio Value :$ ${amount}`
+  value.textContent = `Portfolio Value :$ ${amount.toFixed(2)}`
   valueDiv.appendChild(value)
   this.container.appendChild(valueDiv)
 };

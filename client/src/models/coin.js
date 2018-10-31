@@ -211,7 +211,7 @@ Coin.prototype.updateCoin = function(existingCoin, formCoinData){
     symbol:formCoinData.symbol,
     amount: parseFloat(existingCoin.amount) + parseFloat(formCoinData.amount),
     price:formCoinData.price,
-    value: ((parseFloat(existingCoin.amount) + parseFloat(formCoinData.amount))* formCoinData.price )
+    value: parseFloat((parseFloat(existingCoin.amount) + parseFloat(formCoinData.amount))* formCoinData.price ).toFixed(2)
   }
 
   this.requestDB.put(id, coinUpdated)
