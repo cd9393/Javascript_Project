@@ -18,13 +18,15 @@ PortfolioView.prototype.bindEvents = function(){
 }
 
 PortfolioView.prototype.render = function(portfolioDB){
-  const portfolioWrapper = this.selectElement('#left-contents')
+  const portfolioWrapper = document.querySelector('.left-div')
   // Clear div and render coins in MongoDB
+  console.log(portfolioWrapper);
   portfolioWrapper.innerHTML = '';
   this.assembleCoinList(portfolioDB, portfolioWrapper)
 }
 
 PortfolioView.prototype.assembleCoinList = function(db, wrapper){
+  console.log(db);
   db.forEach((coin) => {
     const coinView = new CoinView(wrapper)
     coinView.render(coin)

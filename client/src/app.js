@@ -5,6 +5,7 @@ const PortfolioView = require('./views/portfolio_view')
 const CryptoList = require('./views/crypto_list.js')
 const TotalValueView = require('./views/total_value_view.js')
 const IndividualCoinView = require('./views/individual_coin_view.js')
+const TestRender = require('./views/test_render.js')
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const cryptoList = new CryptoList(listContainer)
   cryptoList.bindEvents();
 
-  const leftDiv = document.querySelector('left-div')
-  const portfolioView = new PortfolioView(leftDiv);
-  portfolioView.bindEvents();
+  const leftDiv = document.querySelector('.whole-page')
+  const testRender = new TestRender(leftDiv)
+  testRender.bindEvents();
+  // const portfolioView = new PortfolioView(leftDiv);
+  // portfolioView.bindEvents();
 
 
 

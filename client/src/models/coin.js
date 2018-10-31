@@ -7,7 +7,6 @@ const PortfolioView = require('../views/portfolio_view')
 const Coin = function(url){
   this.data = null;
   this.allCoins = null
-  // this.request = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`)
   this.portfolioDB = 'http://localhost:3000/api/coins'
   this.requestDB = new Request(this.portfolioDB)
   this.request = new Request(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=USD&apikey=SZGMIHDEPWLBE9NI`)
@@ -22,13 +21,35 @@ Coin.prototype.bindEvents = function(){
     this.individualCoinPriceData(event.detail)
     console.log(event.detail);
   })
-  this.getPortfolioDB();
+
+const db = this.getPortfolioDB()
+db.then((data) => {
+  this.updatePrice(data)
+})
   this.getAllCoins();
   // this.getData();
   this.getFormSubmitted();
   this.deleteBtn();
+
 }
 
+Coin.prototype.updatePrice = function (allCoins) {
+  allCoins.forEach((coin) => {
+    const todaysPrice = new Request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${coin.symbol}&to_currency=USD&apikey=SZGMIHDEPWLBE9NI`);
+
+    todaysPrice.get().then((data) => {
+      console.log("Update", data);
+      const updateObject = {
+        name: data["Realtime Currency Exchange Rate"]["2. From_Currency Name"],
+        symbol: data["Realtime Currency Exchange Rate"]["1. From_Currency Code"] ,
+        price: parseFloat(data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]),
+        amount: 0
+      }
+      this.updateCoin(coin, updateObject)
+    })
+})
+
+};
 
 Coin.prototype.individualCoinPriceData = function (symbol) {
   const individualCoinData = new Request(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=SZGMIHDEPWLBE9NI`);
@@ -116,7 +137,7 @@ Coin.prototype.getPortfolioDB = function(){
   return this.requestDB.get()
   .then((allCoins) => {
     this.portfolio = allCoins
-    console.log(allCoins);
+    return this.portfolio
     PubSub.publish('Coin:Portfolio-Loaded', allCoins)
   })
 }
@@ -124,7 +145,6 @@ Coin.prototype.getPortfolioDB = function(){
 Coin.prototype.getFormSubmitted = function(){
   // if coin exists in DB then update quantity, else create new coin
   PubSub.subscribe('FormView:coin-submitted', async (event) => {
-    console.log(event.detail);
     const coin = {
       name: event.detail.target[1].value2,
       symbol: event.detail.target[1].value,
@@ -188,7 +208,10 @@ Coin.prototype.updateCoin = function(existingCoin, formCoinData){
   // update coin quantity
   const coinUpdated = {
     name: existingCoin.name,
-    amount: existingCoin.amount + formCoinData.amount
+    symbol:formCoinData.symbol,
+    amount: parseFloat(existingCoin.amount) + parseFloat(formCoinData.amount),
+    price:formCoinData.price,
+    value: ((parseFloat(existingCoin.amount) + parseFloat(formCoinData.amount))* formCoinData.price )
   }
 
   this.requestDB.put(id, coinUpdated)

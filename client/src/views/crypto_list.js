@@ -22,8 +22,13 @@ CryptoList.prototype.render = function () {
   const button = document.querySelector("#coin-prices")
   button.addEventListener("click", () => {
     this.container.innerHTML = ''
+    const leftDiv = document.querySelector('.left-div')
+    const rightDiv = document.querySelector('.right-div')
     const table = this.createTable();
-    this.container.appendChild(table)
+    const tableDiv = document.createElement('div')
+    tableDiv.classList.add('table')
+    tableDiv.appendChild(table)
+    this.container.insertBefore(tableDiv,this.container.firstChild)
   })
 };
 

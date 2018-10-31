@@ -19,7 +19,14 @@ IndividualCoinView.prototype.bindEvents = function (priceHistory) {
 IndividualCoinView.prototype.render = function (priceHistory) {
   this.chartData = (this.priceHistoryFormat(priceHistory, 30));
 console.log(priceHistory);
-  this.container.innerHTML = '';
+
+const leftDiv = document.querySelector('.left-div')
+const rightDiv = document.querySelector('.right-div')
+const table = document.querySelector('.table')
+this.container.innerHTML = ''
+// table.innerHTML = ''
+// rightDiv.innerHTML = ''
+// leftDiv.innerHTML = ''
 
   const header = document.createElement('h1');
   header.textContent = priceHistory[0].name;
