@@ -5,6 +5,22 @@ ul{
   list-style-type: none;
   justify-content: center;
 }
+body{
+  font-family: 'Maven Pro', sans-serif;
+  background-color: #f9fbfc;
+}
+
+.header{
+  background-color: #0e62bb;
+  color: white;
+  padding: 10px;
+  display: flex;
+}
+.navbar{
+  display:flex;
+  justify-content: end;
+
+}
 
 main {
   width: 100%;
