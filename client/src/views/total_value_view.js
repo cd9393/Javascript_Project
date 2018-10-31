@@ -1,4 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js')
+const Coin = require('../models/coin')
 
 const TotalValueView = function(container){
   this.container = container;
@@ -15,6 +16,11 @@ TotalValueView.prototype.bindEvents = function () {
     this.render(portfolioValue)
 
   })
+
+  const dashboardLink = document.querySelector('#dashboard')
+ dashboardLink.addEventListener('click', (event) => {
+   this.handleClick(event)
+ })
 };
 
 TotalValueView.prototype.render = function (amount) {
@@ -25,5 +31,10 @@ TotalValueView.prototype.render = function (amount) {
   valueDiv.appendChild(value)
   this.container.appendChild(valueDiv)
 };
+
+TotalValueView.prototype.handleClick = function(){
+ const coin = new Coin();
+ coin.bindEvents();
+}
 
 module.exports = TotalValueView
