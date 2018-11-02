@@ -34,7 +34,9 @@ TestRender.prototype.renderCoin = function (coin) {
   const coinDiv = document.createElement('div')
   coinDiv.classList.add(`coinsDiv`);
   const coinList = document.createElement('ul');
+  coinList.classList.add(`${coin.symbol}`)
   const nameLi = document.createElement('li');
+  nameLi.classList.add(`${coin.symbol}`);
   nameLi.textContent = coin.name;
   coinList.appendChild(nameLi)
 
@@ -61,6 +63,7 @@ TestRender.prototype.renderCoin = function (coin) {
 
   coinDiv.addEventListener('click', (event) => {
     const symbol = event.target.className;
+    console.log(event);
     PubSub.publish("coinView: coin-clicked", symbol)
   })
   return coinDiv;
